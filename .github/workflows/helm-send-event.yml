@@ -16,11 +16,13 @@ on:
         description: 'Helm repository'
         default: 'oci://ghcr.io/onecx-apps/charts'
         required: false
-        type: string        
+        type: string
 jobs:
   build:
     name: helm create update event
     runs-on: ubuntu-latest
+    env:
+      SAMO_CONVENTIONAL_COMMITS: 'true'    
     permissions:
       contents: write
     steps:
