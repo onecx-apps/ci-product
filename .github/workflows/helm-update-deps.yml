@@ -20,8 +20,8 @@ jobs:
     env:
       SAMO_HELM_ADD_REPO_DEPS: ${{ inputs.addRepoDeps }}
     concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
-      cancel-in-progress: true    
+      group: ${{ github.workflow }}-${{ github.event.client_payload.branch }}
+      cancel-in-progress: true
     permissions:
       contents: write
     steps:
@@ -30,15 +30,16 @@ jobs:
           echo ${{ github.event.client_payload.name }}
           echo ${{ github.event.client_payload.version }}
           echo ${{ github.event.client_payload.repo }}
-      - uses: actions/checkout@v4
+          echo ${{ github.event.client_payload.branch }}
+      - uses: actions/checkout@v6
         with:
           token: ${{ secrets.CI_PAT }}
-          ref: ${{ github.head_ref }}
+          ref: ${{ github.event.client_payload.branch }}
       - uses: lorislab/install-samo-action@v2
       - name: Update helm chart
         run:
           samo project helm lock-update --helm-absolute-dir --helm-dir ${{ inputs.helmSourceDir }} -v debug
       - run: rm -rf samo
-      - uses: stefanzweifel/git-auto-commit-action@v5
+      - uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: 'chore(deps): update ${{ github.event.client_payload.name }} version ${{ github.event.client_payload.version }}'
