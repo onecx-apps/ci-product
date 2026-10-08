@@ -5,9 +5,9 @@ on:
 
 jobs:
   helm:
-    uses: onecx-apps/ci-common/.github/workflows/helm-release.yml@v2
+    uses: onecx-apps/ci-common/.github/workflows/helm-release.yml@v3
     secrets: inherit
   changelog:
-    uses: onecx-apps/ci-common/.github/workflows/generate-changelog.yml@v2
+    uses: onecx-apps/ci-common/.github/workflows/generate-changelog.yml@v3
     needs: helm
     secrets: inherit
