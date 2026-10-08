@@ -10,7 +10,7 @@ on:
         type: boolean
 jobs:
   helm:
-    uses: onecx-apps/ci-common/.github/workflows/helm-build.yml@v2
+    uses: onecx-apps/ci-common/.github/workflows/helm-build.yml@v3
     secrets: inherit
     with:
       push: true
