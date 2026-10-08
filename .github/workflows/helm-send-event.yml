@@ -7,6 +7,11 @@ on:
         description: 'Target repository'
         required: true
         type: string
+      targetBranch:
+        description: 'Target branch'
+        default: 'main'
+        required: false
+        type: string
       eventName:
         description: 'Event name'
         default: 'helm-update-deps'
@@ -22,18 +27,18 @@ jobs:
     name: helm create update event
     runs-on: ubuntu-latest
     env:
-      SAMO_CONVENTIONAL_COMMITS: 'true'    
+      SAMO_CONVENTIONAL_COMMITS: 'true'
     permissions:
       contents: write
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0      
+          fetch-depth: 0
       - uses: lorislab/install-samo-action@v2
       - id: project_version
-        run: echo "stdout=$(samo project version)" >> $GITHUB_OUTPUT           
+        run: echo "stdout=$(samo project version)" >> $GITHUB_OUTPUT
       - id: project_name
-        run: echo "stdout=$(samo project name)" >> $GITHUB_OUTPUT         
+        run: echo "stdout=$(samo project name)" >> $GITHUB_OUTPUT
       - uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.CI_PAT }}
